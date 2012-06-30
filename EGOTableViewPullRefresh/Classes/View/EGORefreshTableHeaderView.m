@@ -38,7 +38,7 @@
 @implementation EGORefreshTableHeaderView
 
 @synthesize delegate=_delegate;
-
+@synthesize objectKey;
 
 - (id)initWithFrame:(CGRect)frame arrowImageName:(NSString *)arrow textColor:(UIColor *)textColor  {
     if((self = [super initWithFrame:frame])) {
@@ -119,7 +119,18 @@
 
         NSString *localizedDateFormatString = NSLocalizedString(@"Last Updated: %@", @"Time of last table refresh");
 		_lastUpdatedLabel.text = [NSString stringWithFormat:localizedDateFormatString, [dateFormatter stringFromDate:date]];
-		[[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:@"EGORefreshTableView_LastRefresh"];
+
+        NSString *forKey;
+        if (self.objectKey)
+        {
+            forKey = [NSString stringWithFormat:@"EGORefreshTableView_LastRefresh_%@", self.objectKey];
+        }
+        else
+        {
+            forKey = @"EGORefreshTableView_LastRefresh";
+        }
+        
+        [[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:forKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 	} else {
