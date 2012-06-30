@@ -39,6 +39,7 @@
 
 @synthesize delegate=_delegate;
 @synthesize objectKey;
+@synthesize lastUpdatedLabel = _lastUpdatedLabel;
 
 - (id)initWithFrame:(CGRect)frame arrowImageName:(NSString *)arrow textColor:(UIColor *)textColor  {
     if((self = [super initWithFrame:frame])) {
@@ -123,11 +124,11 @@
         NSString *forKey;
         if (self.objectKey)
         {
-            forKey = [NSString stringWithFormat:@"EGORefreshTableView_LastRefresh_%@", self.objectKey];
+            forKey = [NSString stringWithFormat:@"LastRefresh_%@", self.objectKey];
         }
         else
         {
-            forKey = @"EGORefreshTableView_LastRefresh";
+            forKey = @"LastRefresh";
         }
         
         [[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:forKey];
