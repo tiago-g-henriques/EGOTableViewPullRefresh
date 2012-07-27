@@ -118,21 +118,24 @@
 		[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
-        NSString *localizedDateFormatString = NSLocalizedString(@"Last Updated: %@", @"Time of last table refresh");
+        NSString *localizedDateFormatString = NSLocalizedString(@"Last Refreshed: %@", @"Time of last table refresh");
 		_lastUpdatedLabel.text = [NSString stringWithFormat:localizedDateFormatString, [dateFormatter stringFromDate:date]];
 
         NSString *forKey;
         if (self.objectKey)
         {
-            forKey = [NSString stringWithFormat:@"LastRefresh_%@", self.objectKey];
+            forKey = [NSString stringWithFormat:@"%@", self.objectKey];
         }
         else
         {
             forKey = @"LastRefresh";
         }
         
-        [[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:forKey];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSMutableDictionary *lastRefresh = [NSMutableDictionary dictionaryWithDictionary:[defaults dictionaryForKey:@"LastRefreshByCategory"]];
+        [lastRefresh setObject:_lastUpdatedLabel.text forKey:forKey];
+        [defaults setObject:lastRefresh forKey:@"LastRefreshByCategory"];
+		[defaults synchronize];
 		
 	} else {
 		
